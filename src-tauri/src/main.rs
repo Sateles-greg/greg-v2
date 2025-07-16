@@ -1,6 +1,10 @@
-// Prevents additional console window on Windows in release, DO NOT REMOVE!!
-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+use tauri::command;
+use std::fs;
 
-fn main() {
-  app_lib::run();
+#[command]
+fn ler_saida_do_greg() -> String {
+    match fs::read_to_string("saida_tauri.txt") {
+        Ok(texto) => texto,
+        Err(_) => "Greg ainda não respondeu nada.".to_string(),
+    }
 }

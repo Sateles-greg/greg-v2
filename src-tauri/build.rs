@@ -1,3 +1,1 @@
-fn main() {
-  tauri_build::build()
-}
+.invoke_handler(tauri::generate_handler![ler_saida_do_greg])

@@ -1,15 +1,26 @@
+'use client'
+import { useEffect, useState } from 'react'
+import { invoke } from '@tauri-apps/api'
 
-'use client';
-import React from 'react';
-import Image from 'next/image';
-import avatar from '../public/avatar.png';
+export default function Page() {
+  const [saidaGreg, setSaidaGreg] = useState("Aguardando...")
 
-export default function Home() {
+  useEffect(() => {
+    const intervalo = setInterval(() => {
+      invoke<string>("ler_saida_do_greg").then((texto) => setSaidaGreg(texto))
+    }, 3000)
+    return () => clearInterval(intervalo)
+  }, [])
+
   return (
-    <main>
-      <h1>Interface Greg V5</h1>
-      <p>Avatar abaixo:</p>
-      <Image src={avatar} alt="Avatar do Greg" width={200} height={200} />
-    </main>
-  );
+    <div>
+      <h2>🎙️ Greg diz:</h2>
+      <pre style={{
+        backgroundColor: "#111", color: "#0f0", padding: "1rem",
+        borderRadius: "8px", fontSize: "1.1rem"
+      }}>
+        {saidaGreg}
+      </pre>
+    </div>
+  )
 }
